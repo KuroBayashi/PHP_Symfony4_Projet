@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Defibrillator{% endblock %}
+
+{% block body %}
+    <h1>Defibrillator</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ defibrillator.id }}</td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td>{{ defibrillator.longitude }}</td>
+            </tr>
+            <tr>
+                <th>Latitude</th>
+                <td>{{ defibrillator.latitude }}</td>
+            </tr>
+            <tr>
+                <th>Note</th>
+                <td>{{ defibrillator.note }}</td>
+            </tr>
+            <tr>
+                <th>Available</th>
+                <td>{{ defibrillator.available ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('defibrillator_index') }}">back to list</a>
+
+    <a href="{{ path('defibrillator_edit', {'id': defibrillator.id}) }}">edit</a>
+
+    {{ include('defibrillator/_delete_form.html.twig') }}
+{% endblock %}
