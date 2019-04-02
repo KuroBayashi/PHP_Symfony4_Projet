@@ -39,13 +39,10 @@ class DefibrillatorController extends AbstractController
             $entityManager->persist($defibrillator);
             $entityManager->flush();
 
-            return $this->redirectToRoute('defibrillator_index');
+            
+            return $this->json([true]); //return true when success
         }
 
-        return $this->render('defibrillator/new.html.twig', [
-            'defibrillator' => $defibrillator,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -53,8 +50,8 @@ class DefibrillatorController extends AbstractController
      */
     public function show(Defibrillator $defibrillator): Response
     {
-        return $this->render('defibrillator/show.html.twig', [
-            'defibrillator' => $defibrillator,
+        return $this->json([
+            'defibrillator' => json_encode($defibrillator),
         ]);
     }
 
@@ -69,15 +66,10 @@ class DefibrillatorController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('defibrillator_index', [
-                'id' => $defibrillator->getId(),
-            ]);
+            return $this->json ([true]); //return true when success
         }
 
-        return $this->render('defibrillator/edit.html.twig', [
-            'defibrillator' => $defibrillator,
-            'form' => $form->createView(),
-        ]);
+        
     }
 
     /**
@@ -89,8 +81,10 @@ class DefibrillatorController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($defibrillator);
             $entityManager->flush();
+
+            return $this->json([true]); //return true when deleted
         }
 
-        return $this->redirectToRoute('defibrillator_index');
+        
     }
 }

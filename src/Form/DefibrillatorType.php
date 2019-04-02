@@ -12,10 +12,11 @@ class DefibrillatorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('longitude')
-            ->add('latitude')
-            ->add('note')
-            ->add('available')
+            ->add('longitude' , NumberType::class)
+            ->add('latitude' , NumberType::class)
+            ->add('note', TextareaType::class)
+            ->add('available' , CheckboxType::class)
+            ->add('reported' , CheckboxType::class)
         ;
     }
 

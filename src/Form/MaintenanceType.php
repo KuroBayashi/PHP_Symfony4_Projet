@@ -12,10 +12,9 @@ class MaintenanceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('done_at')
-            ->add('note')
-            ->add('defibrillator')
-            ->add('user')
+            ->add('done_at' , DatetimeType::class)
+            ->add('note' , TextareaType::class)
+
         ;
     }
 

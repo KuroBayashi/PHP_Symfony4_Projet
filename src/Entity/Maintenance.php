@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MaintenanceRepository")
@@ -24,11 +25,13 @@ class Maintenance
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime
      */
     private $done_at;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * 
      */
     private $note;
 

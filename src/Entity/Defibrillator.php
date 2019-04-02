@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DefibrillatorRepository")
@@ -20,11 +21,15 @@ class Defibrillator
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank
+     * @Assert\Type(type="float")
      */
     private $longitude;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank
+     * @Assert\Type(type="float")
      */
     private $latitude;
 
@@ -35,8 +40,15 @@ class Defibrillator
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\Type(type="bool")
      */
-    private $available;
+    private $available = true;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Assert\Type(type="bool")
+     */
+    private $reported = false;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Maintenance", mappedBy="defibrillator", orphanRemoval=true)
@@ -101,6 +113,18 @@ class Defibrillator
         return $this;
     }
 
+    public function getReport(): ?bool
+    {
+        return $this->reported;
+    }
+
+    public function setAvailable(bool $reported): self
+    {
+        $this->reported = $reported;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Maintenance[]
      */
@@ -108,6 +132,7 @@ class Defibrillator
     {
         return $this->maintenances;
     }
+
 
     public function addMaintenance(Maintenance $maintenance): self
     {

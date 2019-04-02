@@ -42,10 +42,6 @@ class MaintenanceController extends AbstractController
             return $this->redirectToRoute('maintenance_index');
         }
 
-        return $this->render('maintenance/new.html.twig', [
-            'maintenance' => $maintenance,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -58,39 +54,4 @@ class MaintenanceController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="maintenance_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Maintenance $maintenance): Response
-    {
-        $form = $this->createForm(MaintenanceType::class, $maintenance);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('maintenance_index', [
-                'id' => $maintenance->getId(),
-            ]);
-        }
-
-        return $this->render('maintenance/edit.html.twig', [
-            'maintenance' => $maintenance,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="maintenance_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, Maintenance $maintenance): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$maintenance->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($maintenance);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('maintenance_index');
-    }
 }
