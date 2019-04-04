@@ -113,12 +113,12 @@ class Defibrillator
         return $this;
     }
 
-    public function getReport(): ?bool
+    public function getReported(): ?bool
     {
         return $this->reported;
     }
 
-    public function setAvailable(bool $reported): self
+    public function setReported(bool $reported): self
     {
         $this->reported = $reported;
 
