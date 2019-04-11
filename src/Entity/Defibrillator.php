@@ -50,6 +50,12 @@ class Defibrillator
      */
     private $reported = false;
 
+	/**
+	* @ORM\Column(type="integer")
+	* @Assert\Type(type="integer")
+	*/
+	private $uses = 0;
+
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Maintenance", mappedBy="defibrillator", orphanRemoval=true)
      */
