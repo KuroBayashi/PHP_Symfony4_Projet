@@ -1,14 +1,34 @@
-{% extends 'base.html.twig' %}
+{% extends '_layouts/site.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}{{ parent() }} - Register{% endblock %}
 
-{% block body %}
-    <h1>Register</h1>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
+{% block content %}
+    <section class="form-elegant mb-5">
+        <!--Form without header-->
+        <div class="card">
+            <div class="card-body mx-4">
+                <!--Header-->
+                <div class="text-center">
+                    <h3 class="dark-grey-text mb-5"><strong>Sign Up</strong></h3>
+                </div>
 
-        <button class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                <!--Body-->
+                {{ form_start(registrationForm) }}
+                    {{ form_widget(registrationForm) }}
+
+                    <div class="text-center mt-4 mb-3">
+                        <button type="submit" class="btn btn-primary btn-block btn-rounded z-depth-1a">Sign Up</button>
+                    </div>
+                {{ form_end(registrationForm) }}
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer mx-5 pt-3 mb-1">
+                <p class="font-small grey-text d-flex justify-content-end">Already a member? <a href="{{ path('security_login') }}" class="blue-text ml-1"> Sign In</a></p>
+            </div>
+
+        </div>
+        <!--/Form without header-->
+    </section>
 {% endblock %}

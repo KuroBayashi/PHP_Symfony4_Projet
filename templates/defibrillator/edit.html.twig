@@ -1,8 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends '_layouts/site.html.twig' %}
 
-{% block title %}Edit Defibrillator{% endblock %}
+{% block title %}{{ parent() }} - Edit{% endblock %}
+{% block page_id %}{{ parent() }}--defibrillator-edit{% endblock %}
 
-{% block body %}
+{% set page_title = "Defibrillator - Edit" %}
+
+
+{% block content %}
     <h1>Edit Defibrillator</h1>
 
     {{ include('defibrillator/_form.html.twig', {'button_label': 'Update'}) }}

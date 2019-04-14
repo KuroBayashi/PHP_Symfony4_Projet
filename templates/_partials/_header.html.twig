@@ -1,0 +1,48 @@
+<!--Double navigation-->
+<header>
+
+    {% include '_partials/_sidebar.html.twig' %}
+
+    <!-- Navbar -->
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-expand-lg scrolling-navbar double-nav">
+        <!-- SideNav slide-out button -->
+        <div class="float-left">
+            <a href="#" id="js-hamburger" data-activates="slide-out" class="button-collapse"><i class="fas fa-bars"></i></a>
+        </div>
+        <!-- Breadcrumb-->
+        <div class="breadcrumb-dn mr-auto">
+            <p>Breadcrumb</p>
+        </div>
+        <ul class="nav navbar-nav nav-flex-icons ml-auto position-relative">
+            <li class="nav-item">
+                <a href="#" class="nav-link"><i class="fas fa-envelope"></i> <span class="clearfix d-none d-sm-inline-block">Contact</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link"><i class="far fa-comments"></i> <span class="clearfix d-none d-sm-inline-block">Support</span></a>
+            </li>
+            <li class="nav-item px-2 bg-default">
+                {% if app.user %}
+                    <a href="{{ path('user_profile') }}" id="js-layout-header-user-link" class="nav-link">
+                        <i class="fas fa-user"></i> <span class="clearfix d-none d-sm-inline-block">Account</span>
+                    </a>
+                    <div id="js-layout-header-user-card" class="layout-header__user-card card">
+                        <img class="card-img-top" src="{{ asset('build/images/users/background.jpg') }}" alt="#user-background">
+                        <div class="card-body p-2">
+                            <ul class="list-unstyled fa-ul">
+                                <li><span class="fa-li text-dark"><i class="fas fa-user"></i></span><a href="{{ path('user_profile') }}" class="text-primary">Profile</a></li>
+                                <li><span class="fa-li text-dark"><i class="fas fa-envelope"></i></span><a href="#" class="text-primary">Messages</a></li>
+                            </ul>
+                            <div class="dropdown-divider"></div>
+                            <!-- Button -->
+                            <a href="{{ path('security_logout') }}" class="btn btn-danger py-2 text-white">Log out</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{{ path('security_login') }}" class="nav-link"><i class="fas fa-user"></i> <span class="clearfix d-none d-sm-inline-block">Sign in</span></a>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+    <!-- /.Navbar -->
+</header>
+<!--/.Double navigation-->

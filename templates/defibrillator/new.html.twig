@@ -1,8 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends '_layouts/site.html.twig' %}
 
-{% block title %}New Defibrillator{% endblock %}
+{% block title %}{{ parent() }} - Create{% endblock %}
+{% block page_id %}{{ parent() }}--defibrillator-create{% endblock %}
 
-{% block body %}
+{% set page_title = "Defibrillator - Create" %}
+
+
+{% block content %}
     <h1>Create new Defibrillator</h1>
 
     {{ include('defibrillator/_form.html.twig') }}

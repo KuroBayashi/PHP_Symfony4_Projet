@@ -1,8 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends '_layouts/site.html.twig' %}
 
-{% block title %}Defibrillator{% endblock %}
+{% block title %}{{ parent() }} - Show{% endblock %}
+{% block page_id %}{{ parent() }}--defibrillator-show{% endblock %}
 
-{% block body %}
+{% set page_title = "Defibrillator - Show" %}
+
+
+{% block content %}
     <h1>Defibrillator</h1>
 
     <table class="table">

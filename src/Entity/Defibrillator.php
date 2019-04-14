@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -16,50 +17,71 @@ class Defibrillator
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *
+     * @Groups("info")
      */
     private $id;
 
     /**
      * @ORM\Column(type="float")
-     * @Assert\NotBlank
+     *
+     * @Groups("info")
+     *
+     * @Assert\NotBlank()
      * @Assert\Type(type="float")
      */
     private $longitude;
 
     /**
      * @ORM\Column(type="float")
-     * @Assert\NotBlank
+     *
+     * @Groups("info")
+     *
+     * @Assert\NotBlank()
      * @Assert\Type(type="float")
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     *
+     * @Groups("info")
+     *
+     * @Assert\Type(type="string")
      */
     private $note;
 
     /**
      * @ORM\Column(type="boolean")
+     *
+     * @Groups("info")
+     *
      * @Assert\Type(type="bool")
      */
     private $available = true;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\OneToMany(targetEntity="App\Entity\Maintenance", mappedBy="defibrillator", orphanRemoval=true)
+     */
+    private $maintenances;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups("info")
+     *
      * @Assert\Type(type="bool")
      */
     private $reported = false;
 
-	/**
-	* @ORM\Column(type="integer")
-	* @Assert\Type(type="integer")
-	*/
-	private $uses = 0;
-
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Maintenance", mappedBy="defibrillator", orphanRemoval=true)
+     * @ORM\Column(type="integer")
+     *
+     * @Groups("info")
+     *
+     * @Assert\GreaterThanOrEqual(value=0)
      */
-    private $maintenances;
+    private $uses = 0;
 
     public function __construct()
     {
@@ -119,18 +141,6 @@ class Defibrillator
         return $this;
     }
 
-    public function getReported(): ?bool
-    {
-        return $this->reported;
-    }
-
-    public function setReported(bool $reported): self
-    {
-        $this->reported = $reported;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Maintenance[]
      */
@@ -138,7 +148,6 @@ class Defibrillator
     {
         return $this->maintenances;
     }
-
 
     public function addMaintenance(Maintenance $maintenance): self
     {
@@ -159,6 +168,30 @@ class Defibrillator
                 $maintenance->setDefibrillator(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getReported(): ?bool
+    {
+        return $this->reported;
+    }
+
+    public function setReported(?bool $reported): self
+    {
+        $this->reported = $reported;
+
+        return $this;
+    }
+
+    public function getUses(): ?int
+    {
+        return $this->uses;
+    }
+
+    public function setUses(int $uses): self
+    {
+        $this->uses = $uses;
 
         return $this;
     }

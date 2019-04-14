@@ -1,0 +1,6 @@
+<form id="modal-form-delete" method="post" action="{{ path('defibrillator_delete', {'id': defibrillator.id}) }}">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ defibrillator.id) }}">
+
+    <button class="js-modal-delete btn btn-danger">Delete</button>
+</form>

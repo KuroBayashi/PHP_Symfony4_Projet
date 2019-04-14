@@ -1,41 +1,83 @@
-{% extends 'base.html.twig' %}
+{% extends '_layouts/site.html.twig' %}
 
-{% block title %}Defibrillator index{% endblock %}
+{% block title %}{{ parent() }} - Index{% endblock %}
 
-{% block body %}
-    <h1>Defibrillator index</h1>
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('defibrillator_index') }}
+{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Longitude</th>
-                <th>Latitude</th>
-                <th>Note</th>
-                <th>Available</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for defibrillator in defibrillators %}
-            <tr>
-                <td>{{ defibrillator.id }}</td>
-                <td>{{ defibrillator.longitude }}</td>
-                <td>{{ defibrillator.latitude }}</td>
-                <td>{{ defibrillator.note }}</td>
-                <td>{{ defibrillator.available ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('defibrillator_show', {'id': defibrillator.id}) }}">show</a>
-                    <a href="{{ path('defibrillator_edit', {'id': defibrillator.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block content %}
+    <div class="container-fluid">
+        <div class="row text-center">
+            <div class="col">
+                <!--Card-->
+                <div class="card card-cascade wider reverse my-4 pb-5">
+                    <!--Card image-->
+                    <div id="map" class="streetmap-card overlay wow fadeIn"></div>
+                    <!--/.Card image-->
 
-    <a href="{{ path('defibrillator_new') }}">Create new</a>
+                    <!--Card content-->
+                    <div class="card-body card-body-cascade text-center wow fadeIn" data-wow-delay="0.2s">
+                        <!--Title-->
+                        <h4 class="card-title"><strong>My adventure</strong></h4>
+                        <h5 class="blue-text"><strong>Photography</strong></h5>
+
+                        <p class="card-text">
+                            Sed ut perspiciatis unde omnis iste natus sit voluptatem accusantium doloremque laudantium,
+                            totam rem aperiam.
+                        </p>
+
+                        <a class="btn btn-primary btn-lg">Primary button</a>
+                        <a class="btn btn-secondary btn-lg">Secondary button</a>
+                        <a class="btn btn-default btn-lg">Default button</a>
+                    </div>
+                    <!--/.Card content-->
+                </div>
+                <!--/.Card-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col m-2">
+                <table id="defibrillator-table" class="table table-striped table-bordered">
+                    <thead class="bg-dark text-light">
+                        <tr>
+                            <th>Id</th>
+                            <th>Longitude</th>
+                            <th>Latitude</th>
+                            <th>Note</th>
+                            <th>Available</th>
+                            <th>actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for defibrillator in defibrillators %}
+                            <tr>
+                                <td>{{ defibrillator.id }}</td>
+                                <td>{{ defibrillator.longitude }}</td>
+                                <td>{{ defibrillator.latitude }}</td>
+                                <td>{{ defibrillator.note }}</td>
+                                <td>{{ defibrillator.available ? 'Yes' : 'No' }}</td>
+                                <td>
+                                    <a href="{{ path('defibrillator_show', {'id': defibrillator.id}) }}" class="text-primary">Show</a><br>
+                                    <a href="{{ path('defibrillator_edit', {'id': defibrillator.id}) }}" class="text-primary">Edit</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">no records found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <a href="{{ path('defibrillator_new') }}">Create new</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('defibrillator_index') }}
 {% endblock %}

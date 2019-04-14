@@ -5,10 +5,13 @@ namespace App\Controller;
 use App\Entity\Defibrillator;
 use App\Form\DefibrillatorType;
 use App\Repository\DefibrillatorRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/defibrillator")
@@ -18,31 +21,66 @@ class DefibrillatorController extends AbstractController
     /**
      * @Route("/", name="defibrillator_index", methods={"GET"})
      */
-    public function index(DefibrillatorRepository $defibrillatorRepository): Response
+    public function index(DefibrillatorRepository $repository): Response
     {
         return $this->render('defibrillator/index.html.twig', [
-            'defibrillators' => $defibrillatorRepository->findAll(),
+            'defibrillators' => $repository->findBy(['available' => true]),
         ]);
     }
 
     /**
-     * @Route("/new", name="defibrillator_new", methods={"GET","POST"})
+     * @Route("/new", name="defibrillator_new", methods={"GET", "POST", "PUT"})
+     *
+     * @IsGranted("ROLE_ADMIN")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, SerializerInterface $serializer): Response
     {
         $defibrillator = new Defibrillator();
-        $form = $this->createForm(DefibrillatorType::class, $defibrillator);
+        $form = $this->createForm(DefibrillatorType::class, $defibrillator, [
+            'action' => $this->generateUrl('defibrillator_new')
+        ]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($defibrillator);
-            $entityManager->flush();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($defibrillator);
+                $entityManager->flush();
 
-            
-            return $this->json([true]); //return true when success
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse([
+                        'defibrillator' => json_decode($serializer->serialize($defibrillator, 'json', ['groups' => 'info'])),
+                        'success' => true
+                    ]);
+                }
+
+                return $this->redirectToRoute('defibrillator_index');
+            }
+            else {
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse([
+                        'form' => $this->renderView('defibrillator/_modal_form.html.twig', [
+                            'form' => $form->createView()
+                        ])
+                    ]);
+                }
+            }
         }
 
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'form' => $this->renderView('defibrillator/modal.html.twig', [
+                    'modal_title' => "Add a new defibrillator",
+                    'defibrillator' => $defibrillator, 'json',
+                    'form' => $form->createView()
+                ])
+            ]);
+        }
+
+        return $this->render('defibrillator/new.html.twig', [
+            'defibrillator' => $defibrillator,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -50,41 +88,89 @@ class DefibrillatorController extends AbstractController
      */
     public function show(Defibrillator $defibrillator): Response
     {
-        return $this->json([
-            'defibrillator' => json_encode($defibrillator),
+        return $this->render('defibrillator/show.html.twig', [
+            'defibrillator' => $defibrillator,
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="defibrillator_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="defibrillator_edit", methods={"GET","POST", "PUT"})
+     *
+     * @IsGranted("ROLE_ADMIN")
      */
-    public function edit(Request $request, Defibrillator $defibrillator): Response
+    public function edit(Request $request, Defibrillator $defibrillator, SerializerInterface $serializer): Response
     {
-        $form = $this->createForm(DefibrillatorType::class, $defibrillator);
+        $form = $this->createForm(DefibrillatorType::class, $defibrillator, [
+            'action' => $this->generateUrl('defibrillator_edit', [
+                'id' => $defibrillator->getId()
+            ])
+        ]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
 
-            return $this->json ([true]); //return true when success
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse([
+                        'defibrillator' => json_decode($serializer->serialize($defibrillator, 'json', ['groups' => 'info'])),
+                        'success' => true
+                    ]);
+                }
+
+                return $this->redirectToRoute('defibrillator_index', [
+                    'id' => $defibrillator->getId(),
+                ]);
+            }
+            else {
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse([
+                        'form' => $this->renderView('defibrillator/_modal_form.html.twig', [
+                            'form' => $form->createView()
+                        ])
+                    ]);
+                }
+            }
         }
 
-        
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'form' => $this->renderView('defibrillator/modal.html.twig', [
+                    'modal_title' => "Edit defibrillator",
+                    'defibrillator' => $defibrillator,
+                    'form' => $form->createView()
+                ])
+            ]);
+        }
+
+        return $this->render('defibrillator/edit.html.twig', [
+            'defibrillator' => $defibrillator,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
      * @Route("/{id}", name="defibrillator_delete", methods={"DELETE"})
+     *
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Defibrillator $defibrillator): Response
     {
+        $id = $defibrillator->getId();
+
         if ($this->isCsrfTokenValid('delete'.$defibrillator->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($defibrillator);
             $entityManager->flush();
-
-            return $this->json([true]); //return true when deleted
         }
 
-        
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'id' => $id,
+                'success' => true
+            ]);
+        }
+
+        return $this->redirectToRoute('defibrillator_index');
     }
 }

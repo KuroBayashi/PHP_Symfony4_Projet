@@ -25,13 +25,16 @@ class Maintenance
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\DateTime
+     *
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
      */
     private $done_at;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * 
+     *
+     * @Assert\Type(type="string")
      */
     private $note;
 
@@ -40,6 +43,11 @@ class Maintenance
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    public function __construct()
+    {
+        $this->done_at = new \DateTime();
+    }
 
     public function getId(): ?int
     {
