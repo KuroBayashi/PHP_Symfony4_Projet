@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Table(name="`users`")
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
@@ -44,9 +45,15 @@ class User implements UserInterface
      */
     private $maintenances;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Utilization", mappedBy="user", orphanRemoval=true)
+     */
+    private $utilizations;
+
     public function __construct()
     {
         $this->maintenances = new ArrayCollection();
+        $this->utilizations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -152,6 +159,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($maintenance->getUser() === $this) {
                 $maintenance->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Utilization[]
+     */
+    public function getUtilizations(): Collection
+    {
+        return $this->utilizations;
+    }
+
+    public function addUtilizations(Utilization $utilization): self
+    {
+        if (!$this->utilizations->contains($utilization)) {
+            $this->utilizations[] = $utilization;
+            $utilization->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUtilizations(Utilization $utilization): self
+    {
+        if ($this->utilizations->contains($utilization)) {
+            $this->utilizations->removeElement($utilization);
+            // set the owning side to null (unless already changed)
+            if ($utilization->getUser() === $this) {
+                $utilization->setUser(null);
             }
         }
 

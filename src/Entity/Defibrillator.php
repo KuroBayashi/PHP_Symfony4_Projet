@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DefibrillatorRepository")
+ * @ORM\Table(name="`defibrillators`")
  */
 class Defibrillator
 {
@@ -75,17 +76,14 @@ class Defibrillator
     private $reported = false;
 
     /**
-     * @ORM\Column(type="integer")
-     *
-     * @Groups("info")
-     *
-     * @Assert\GreaterThanOrEqual(value=0)
+     * @ORM\OneToMany(targetEntity="App\Entity\Utilization", mappedBy="defibrillator", orphanRemoval=true)
      */
-    private $uses = 0;
+    private $utilizations;
 
     public function __construct()
     {
         $this->maintenances = new ArrayCollection();
+        $this->utilizations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,15 +182,35 @@ class Defibrillator
         return $this;
     }
 
-    public function getUses(): ?int
+    /**
+     * @return Collection|Utilization[]
+     */
+    public function getUtilizations(): Collection
     {
-        return $this->uses;
+        return $this->utilizations;
     }
 
-    public function setUses(int $uses): self
+    public function addUtilizations(Utilization $utilization): self
     {
-        $this->uses = $uses;
+        if (!$this->utilizations->contains($utilization)) {
+            $this->utilizations[] = $utilization;
+            $utilization->setDefibrillator($this);
+        }
 
         return $this;
     }
+
+    public function removeUtilizations(Utilization $utilization): self
+    {
+        if ($this->utilizations->contains($utilization)) {
+            $this->utilizations->removeElement($utilization);
+            // set the owning side to null (unless already changed)
+            if ($utilization->getDefibrillator() === $this) {
+                $utilization->setDefibrillator(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

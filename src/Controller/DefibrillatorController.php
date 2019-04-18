@@ -69,7 +69,7 @@ class DefibrillatorController extends AbstractController
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse([
-                'form' => $this->renderView('defibrillator/modal.html.twig', [
+                'form' => $this->renderView('defibrillator/modal_edit.html.twig', [
                     'modal_title' => "Add a new defibrillator",
                     'defibrillator' => $defibrillator, 'json',
                     'form' => $form->createView()
@@ -84,7 +84,7 @@ class DefibrillatorController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="defibrillator_show", methods={"GET"})
+     * @Route("/{id}", name="defibrillator_show", methods={"GET"}, requirements={"id"="\d+"})
      */
     public function show(Defibrillator $defibrillator): Response
     {
@@ -94,7 +94,7 @@ class DefibrillatorController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="defibrillator_edit", methods={"GET","POST", "PUT"})
+     * @Route("/{id}/edit", name="defibrillator_edit", methods={"GET","POST", "PUT"}, requirements={"id"="\d+"})
      *
      * @IsGranted("ROLE_ADMIN")
      */
@@ -135,7 +135,7 @@ class DefibrillatorController extends AbstractController
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse([
-                'form' => $this->renderView('defibrillator/modal.html.twig', [
+                'form' => $this->renderView('defibrillator/modal_edit.html.twig', [
                     'modal_title' => "Edit defibrillator",
                     'defibrillator' => $defibrillator,
                     'form' => $form->createView()
@@ -150,7 +150,47 @@ class DefibrillatorController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="defibrillator_delete", methods={"DELETE"})
+     * @Route("/{id}/report", name="defibrillator_report", methods={"GET","POST", "PUT"}, requirements={"id"="\d+"})
+     *
+     * @IsGranted("ROLE_USER")
+     */
+    public function report(Request $request, Defibrillator $defibrillator, SerializerInterface $serializer): Response
+    {
+        $form = $this->createFormBuilder($defibrillator)
+            ->setAction($this->generateUrl('defibrillator_report', ["id" => $defibrillator->getId()]))
+            ->getForm();
+        $form->handleRequest($request);
+
+        if (($form->isSubmitted() && $form->isValid()) || $this->isCsrfTokenValid('report'.$defibrillator->getId(), $request->request->get('_token'))) {
+            $defibrillator->setReported(true);
+            $this->getDoctrine()->getManager()->flush();
+
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse([
+                    'defibrillator' => json_decode($serializer->serialize($defibrillator, 'json', ['groups' => 'info']))
+                ]);
+            }
+
+            return $this->redirectToRoute('defibrillator_index', [
+                'id' => $defibrillator->getId(),
+            ]);
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'form' => $this->renderView('defibrillator/modal_report.html.twig', [
+                    'modal_title' => "Report defibrillator",
+                    'defibrillator' => $defibrillator,
+                    'form' => $form->createView()
+                ])
+            ]);
+        }
+
+        return $this->redirectToRoute('defibrillator_index');
+    }
+
+    /**
+     * @Route("/{id}", name="defibrillator_delete", methods={"DELETE"}, requirements={"id"="\d+"})
      *
      * @IsGranted("ROLE_ADMIN")
      */

@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Defibrillator;
 use App\Entity\Maintenance;
 use App\Entity\User;
+use App\Entity\Utilization;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -68,7 +69,6 @@ class AppFixtures extends Fixture {
                 $data['fields']['accessibilite'];
 
             $defibrillator->setNote($note);
-            $defibrillator->setUses(mt_rand(0, 5));
 
             $rand = mt_rand(0, 10);
             if ($rand <= 1) $defibrillator->setReported(true);
@@ -78,7 +78,7 @@ class AppFixtures extends Fixture {
         }
         $manager->flush();
 
-        // Create random maintenances
+        // Create random maintenances and utilizations
         $dateEnd = new DateTime();
         $dateEnd->modify('-1 day');
         $dateStart = new DateTime();
@@ -89,15 +89,25 @@ class AppFixtures extends Fixture {
                 $maintenance = new Maintenance();
                 $maintenance->setDefibrillator($defibrillator);
                 $maintenance->setUser($users[mt_rand(0, count($users)-1)]);
-                $doneAt = new DateTime();
-                $doneAt->setTimestamp(mt_rand($dateStart->getTimestamp(), $dateEnd->getTimestamp()));
+                    $doneAt = new DateTime();
+                    $doneAt->setTimestamp(mt_rand($dateStart->getTimestamp(), $dateEnd->getTimestamp()));
                 $maintenance->setDoneAt($doneAt);
                 $maintenance->setNote($faker->sentence);
 
                 $manager->persist($maintenance);
             }
+
+            for ($i = 0; $i < mt_rand(0, 20); ++$i) {
+                $utilization = new Utilization();
+                $utilization->setDefibrillator($defibrillator);
+                $utilization->setUser($users[mt_rand(0, count($users)-1)]);
+                $doneAt = new DateTime();
+                $doneAt->setTimestamp(mt_rand($dateStart->getTimestamp(), $dateEnd->getTimestamp()));
+                $utilization->setDoneAt($doneAt);
+
+                $manager->persist($utilization);
+            }
         }
         $manager->flush();
-
     }
 }

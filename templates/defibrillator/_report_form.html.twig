@@ -1,0 +1,6 @@
+<form method="post" action="{{ path('defibrillator_report', {'id': defibrillator.id}) }}">
+    <input type="hidden" name="_method" value="POST">
+    <input type="hidden" name="_token" value="{{ csrf_token('report' ~ defibrillator.id) }}">
+
+    <button class="js-modal-delete btn btn-danger">Report</button>
+</form>

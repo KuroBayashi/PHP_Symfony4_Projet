@@ -1,9 +1,6 @@
 {% extends '_layouts/site.html.twig' %}
 
 {% block title %}{{ parent() }} - Show{% endblock %}
-{% block page_id %}{{ parent() }}--defibrillator-show{% endblock %}
-
-{% set page_title = "Defibrillator - Show" %}
 
 
 {% block content %}
@@ -36,7 +33,9 @@
 
     <a href="{{ path('defibrillator_index') }}">back to list</a>
 
-    <a href="{{ path('defibrillator_edit', {'id': defibrillator.id}) }}">edit</a>
-
-    {{ include('defibrillator/_delete_form.html.twig') }}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('defibrillator_edit', {'id': defibrillator.id}) }}">edit</a>
+    {% elseif is_granted('ROLE_USER') %}
+        {{ include('defibrillator/_report_form.html.twig') }}
+    {% endif %}
 {% endblock %}

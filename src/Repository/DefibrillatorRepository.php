@@ -22,19 +22,21 @@ class DefibrillatorRepository extends ServiceEntityRepository
     // /**
     //  * @return Defibrillator[] Returns an array of Defibrillator objects
     //  */
-    /*
-    public function findByExampleField($value)
+    public function findVisible($minlongitude, $maxlongitude, $minlatitude, $maxlatitude)
     {
         return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('d.longitude > :minlongitude')
+            ->andWhere('d.longitude < :maxlongitude')
+            ->andWhere('d.latitude > :minlatitude')
+            ->andWhere('d.latitude < :maxlatitude')
+            ->setParameter('minlongitude', $minlongitude)
+            ->setParameter('maxlongitude', $maxlongitude)
+            ->setParameter('minlatitude', $minlatitude)
+            ->setParameter('maxlatitude', $maxlatitude)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Defibrillator

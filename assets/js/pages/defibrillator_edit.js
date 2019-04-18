@@ -1,7 +1,7 @@
 'use strict';
 
 // CSS
-require('../../scss/pages/defibrillator_index.scss');
+require('../../scss/pages/defibrillator_edit.scss');
 
 // JS
 const $ = require('jquery');
@@ -12,7 +12,7 @@ const StreetMap = require('../components/streetmap');
 
 $(document).ready(() => {
     let streetMap = new StreetMap();
-    streetMap.init('map', StreetMap.TYPES.DEFIBRILLATOR_REPORT);
+    streetMap.init('map', StreetMap.TYPES.DEFIBRILLATOR_EDIT);
     streetMap.geolocalise();
 
     $('#defibrillator-table').DataTable();

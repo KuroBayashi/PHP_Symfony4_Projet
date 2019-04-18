@@ -78,16 +78,24 @@ class StreetMap {
      * loadMarkers
      */
     loadMarkers() {
-        $.getJSON("/api/defibrillator/available", (data) => {
+        let bounds = this.map.getBounds();
+
+        $.getJSON("/api/defibrillator/visible/"+ bounds.getWest() +"/"+ bounds.getEast() +"/"+ bounds.getSouth() +"/"+ bounds.getNorth(), (data) => {
             $.each(data, (i, defibrillator) => {
                 let marker = this.getMarker(this.user.lat, this.user.lng, defibrillator.latitude, defibrillator.longitude, {id: defibrillator.id});
 
                 if (this.type === StreetMap.TYPES.DEFIBRILLATOR_EDIT) {
                     this.onClickEditDefibrillator(marker);
                 }
+                else if (this.type === StreetMap.TYPES.DEFIBRILLATOR_REPORT) {
+                    this.onClickReportDefibrillator(marker);
+                }
 
-                this.map.addLayer(marker);
-                this.markers.push(marker);
+                // Check if the marker has already been added
+                if (-1 === this.markers.findIndex(m => m.options.id === marker.options.id)) {
+                    this.map.addLayer(marker);
+                    this.markers.push(marker);
+                }
             });
         });
     };
@@ -109,10 +117,20 @@ class StreetMap {
 
             L.circle(this.user, (e.accuracy / 2)).addTo(this.map);
 
-            this.loadMarkers();
+            this.onMapUpdate();
         });
         this.map.on('locationerror', (e) => {
             alert(e.message);
+        });
+    }
+
+    onMapUpdate() {
+        this.map.on('zoomend', () => {
+            this.loadMarkers();
+        });
+
+        this.map.on('dragend', () => {
+            this.loadMarkers();
         });
     }
 
@@ -140,6 +158,18 @@ class StreetMap {
             }).then(() => {
                 this.handleDefibrillatorFormSubmit();
                 this.handleDefibrillatorFormDelete();
+            });
+        });
+    }
+
+    onClickReportDefibrillator(marker) {
+        marker.on('click', (e) => {
+            $.getJSON("/defibrillator/" + e.target.options.id + "/report", (data) => {
+                $('#modal').remove();
+                $('main').append(data.form);
+                $('#modal').modal('show');
+            }).then(() => {
+                this.handleDefibrillatorFormReport();
             });
         });
     }
@@ -208,6 +238,34 @@ class StreetMap {
                     for (let i = 0; i < this.markers.length; ++i) {
                         if (this.markers[i].options.id === data.id) {
                             this.map.removeLayer(this.markers[i]);
+                        }
+                    }
+                }
+            });
+        })
+    }
+
+    handleDefibrillatorFormReport() {
+        $(".js-modal-report").on('click', (e) => {
+            e.preventDefault();
+
+            let form = $('#modal-form');
+
+            $.ajax({
+                type: "POST",
+                url: form.attr('action'),
+                data: form.serialize(),
+                beforeSend: () => {
+                    $('.modal-footer .btn').attr("disabled","disabled");
+                    $('.modal-body').css('opacity', '.5');
+                },
+                success: (data) => {
+                    $('#modal').modal('hide');
+
+                    // Reported popup
+                    for (let i = 0; i < this.markers.length; ++i) {
+                        if (this.markers[i].options.id === data.defibrillator.id) {
+                            this.markers[i].bindPopup("Successfully reported!").openPopup();
                         }
                     }
                 }

@@ -25,6 +25,7 @@ Encore
     .addEntry('app_index', './assets/js/pages/app_index.js')
     .addEntry('app_home', './assets/js/pages/app_home.js')
     .addEntry('defibrillator_index', './assets/js/pages/defibrillator_index.js')
+    .addEntry('defibrillator_edit', './assets/js/pages/defibrillator_edit.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

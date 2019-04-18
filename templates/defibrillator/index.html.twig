@@ -4,7 +4,11 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('defibrillator_index') }}
+    {% if is_granted('ROLE_ADMIN') %}
+        {{ encore_entry_link_tags('defibrillator_edit') }}
+    {% else %}
+        {{ encore_entry_link_tags('defibrillator_index') }}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -79,5 +83,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('defibrillator_index') }}
+    {% if is_granted('ROLE_ADMIN') %}
+        {{ encore_entry_script_tags('defibrillator_edit') }}
+    {% else %}
+        {{ encore_entry_script_tags('defibrillator_index') }}
+    {% endif %}
 {% endblock %}
