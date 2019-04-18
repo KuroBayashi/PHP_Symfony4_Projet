@@ -19,7 +19,7 @@ class UtilizationRepository extends ServiceEntityRepository
         parent::__construct($registry, Utilization::class);
     }
 
-	public function findUtil($value)
+	public function findUtil()
     {
         return $this->createQueryBuilder('u')
 		    ->select('u.defibrillator_id, count(u.id) AS nb')

@@ -17,13 +17,13 @@ const $ = require('jquery');
 
 		});
 	}
-	function drawTrendlines(plop) {
+	function drawTrendlines(data) {
 		var data = new google.visualization.DataTable();
 		data.addColumn('number', "Identifiant");
 		data.addColumn('number', "Nombre d'utilisations");
 
 
-		data.addRows(plop);
+		data.addRows(data);
 
 		var options = {
 			title: "Utilisation des defibrillators",
