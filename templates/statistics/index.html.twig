@@ -4,12 +4,12 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('app_index') }}
+    {{ encore_entry_link_tags('statistics_index') }}
 {% endblock %}
 
 {% block javascripts %}
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    {{ encore_entry_script_tags('charts') }}
+    {{ encore_entry_script_tags('statistics_index') }}
 {% endblock %}
 
 {% block body %}

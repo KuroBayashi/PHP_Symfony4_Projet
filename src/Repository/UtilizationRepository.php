@@ -19,6 +19,18 @@ class UtilizationRepository extends ServiceEntityRepository
         parent::__construct($registry, Utilization::class);
     }
 
+	public function findUtil($value)
+    {
+        return $this->createQueryBuilder('u')
+		    ->select('u.defibrillator_id, count(u.id) AS nb')
+            ->groupBy('u.defibrillator_id')
+            ->orderBy('u.nb', 'DESC')
+            ->setMaxResults(100)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Usage[] Returns an array of Usage objects
     //  */
@@ -47,4 +59,6 @@ class UtilizationRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
 }

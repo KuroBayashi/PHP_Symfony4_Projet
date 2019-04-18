@@ -14,6 +14,7 @@ class Utilization
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("info")
      */
     private $id;
 
@@ -25,6 +26,7 @@ class Utilization
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("info")
      */
     private $doneAt;
 
