@@ -32,7 +32,7 @@ class ApiUtilizationController extends AbstractController
         return JsonResponse::fromJsonString($serializer->serialize(
             $utilizationRepository->findUtil(),
             'json',
-        ));
+        );
     }
 
    
