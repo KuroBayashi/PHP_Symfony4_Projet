@@ -26,4 +26,23 @@ class AppController extends AbstractController
             'controller_name' => 'AppController',
         ]);
     }
+    /**
+     * @Route("/contact", name="security_contact")
+     */
+        public function contact()
+    {
+        return $this->render('security/contact.html.twig', [
+            'controller_name' => 'AppController',
+        ]);
+    }
+	/**
+     * @Route("/stats_index", name="stats_index")
+     */
+    
+            public function stats_index()
+    {
+        return $this->render('statistics/index.html.twig', [
+            'controller_name' => 'AppController',
+        ]);
+    }
 }
