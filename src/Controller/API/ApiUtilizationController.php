@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ApiUtilizationController extends AbstractController
 {
 
-/**
+    /**
      * @Route( "/api/utilization/all", name="api_utilization_getall", methods={"GET", "HEAD"} )
      */
     public function getAll(SerializerInterface $serializer, UtilizationRepository $utilizationRepository) : JsonResponse
@@ -24,7 +24,7 @@ class ApiUtilizationController extends AbstractController
         ));
     }
 
-/**
+    /**
      * @Route( "/api/utilization/nb_util", name="api_utilization_nb_util", methods={"GET", "HEAD"} )
      */
     public function nbUtil(SerializerInterface $serializer, UtilizationRepository $utilizationRepository) : JsonResponse

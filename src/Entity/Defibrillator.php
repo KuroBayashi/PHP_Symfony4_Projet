@@ -19,14 +19,14 @@ class Defibrillator
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      *
-     * @Groups("info")
+     * @Groups({"d_info"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="float")
      *
-     * @Groups("info")
+     * @Groups({"d_info"})
      *
      * @Assert\NotBlank()
      * @Assert\Type(type="float")
@@ -36,7 +36,7 @@ class Defibrillator
     /**
      * @ORM\Column(type="float")
      *
-     * @Groups("info")
+     * @Groups({"d_info"})
      *
      * @Assert\NotBlank()
      * @Assert\Type(type="float")
@@ -46,7 +46,7 @@ class Defibrillator
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups("info")
+     * @Groups({"d_info"})
      *
      * @Assert\Type(type="string")
      */
@@ -55,7 +55,7 @@ class Defibrillator
     /**
      * @ORM\Column(type="boolean")
      *
-     * @Groups("info")
+     * @Groups({"d_info"})
      *
      * @Assert\Type(type="bool")
      */
@@ -63,13 +63,15 @@ class Defibrillator
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Maintenance", mappedBy="defibrillator", orphanRemoval=true)
+     *
+     * @Groups({"d_info_expended"})
      */
     private $maintenances;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      *
-     * @Groups("info")
+     * @Groups({"d_info"})
      *
      * @Assert\Type(type="bool")
      */
@@ -77,6 +79,8 @@ class Defibrillator
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Utilization", mappedBy="defibrillator", orphanRemoval=true)
+     *
+     * @Groups({"d_info_expended"})
      */
     private $utilizations;
 

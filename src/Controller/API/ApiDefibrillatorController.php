@@ -6,7 +6,12 @@ use App\Entity\Defibrillator;
 use App\Repository\DefibrillatorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ApiDefibrillatorController extends AbstractController
@@ -19,7 +24,12 @@ class ApiDefibrillatorController extends AbstractController
         return JsonResponse::fromJsonString($serializer->serialize(
             $defibrillatorRepository->findAll(),
             'json',
-            ['groups' => 'info']
+            [
+                'groups' => ['d_info', 'd_info_expended', 'm_info', 'm_info_expended', 'u_info', 'u_info_expended', 'user_info'],
+                AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                    return $object->getId();
+                }
+            ]
         ));
     }
 
@@ -40,7 +50,7 @@ class ApiDefibrillatorController extends AbstractController
         return JsonResponse::fromJsonString($serializer->serialize(
             $defibrillatorRepository->findVisible($minlongitude, $maxlongitude, $minlatitude, $maxlatitude),
             'json',
-            ['groups' => 'info']
+            ['groups' => 'd_info']
         ));
     }
 
@@ -52,20 +62,31 @@ class ApiDefibrillatorController extends AbstractController
         return JsonResponse::fromJsonString($serializer->serialize(
             $defibrillatorRepository->findBy(['available' => true]),
             'json',
-            ['groups' => 'info']
+            ['groups' => 'd_info']
         ));
     }
 
-
     /**
-     * @Route( "/api/defibrillator/{id}", name="api_defibrillator_getone", methods={"GET", "HEAD"}, requirements={"id"="\d+"})
+     * @Route( "/api/defibrillator/{id}", name="api_defibrillator_getonebyid", methods={"GET", "HEAD"}, requirements={"id"="\d+"})
      */
     public function getOneById(SerializerInterface $serializer, Defibrillator $defibrillator) : JsonResponse
     {
         return JsonResponse::fromJsonString($serializer->serialize(
             $defibrillator,
             'json',
-            ['groups' => 'info']
+            ['groups' => 'd_info']
+        ));
+    }
+
+    /**
+     * @Route( "/api/defibrillator/utilizations", name="api_defibrillator_getallwithutilizationcount", methods={"GET", "HEAD"})
+     */
+    public function getAllWithUtilizationCount(SerializerInterface $serializer, DefibrillatorRepository $defibrillatorRepository) : Response
+    {
+        return JsonResponse::fromJsonString( $serializer->serialize(
+            $defibrillatorRepository->findAllWithUtilizationCount(),
+            'json',
+            ['groups' => ['d_info']]
         ));
     }
 }

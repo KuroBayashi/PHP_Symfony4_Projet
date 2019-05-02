@@ -49,7 +49,7 @@ class DefibrillatorController extends AbstractController
 
                 if ($request->isXmlHttpRequest()) {
                     return new JsonResponse([
-                        'defibrillator' => json_decode($serializer->serialize($defibrillator, 'json', ['groups' => 'info'])),
+                        'defibrillator' => json_decode($serializer->serialize($defibrillator, 'json', ['groups' => 'd_info'])),
                         'success' => true
                     ]);
                 }
@@ -113,7 +113,7 @@ class DefibrillatorController extends AbstractController
 
                 if ($request->isXmlHttpRequest()) {
                     return new JsonResponse([
-                        'defibrillator' => json_decode($serializer->serialize($defibrillator, 'json', ['groups' => 'info'])),
+                        'defibrillator' => json_decode($serializer->serialize($defibrillator, 'json', ['groups' => 'd_info'])),
                         'success' => true
                     ]);
                 }
@@ -167,7 +167,7 @@ class DefibrillatorController extends AbstractController
 
             if ($request->isXmlHttpRequest()) {
                 return new JsonResponse([
-                    'defibrillator' => json_decode($serializer->serialize($defibrillator, 'json', ['groups' => 'info']))
+                    'defibrillator' => json_decode($serializer->serialize($defibrillator, 'json', ['groups' => 'd_info']))
                 ]);
             }
 

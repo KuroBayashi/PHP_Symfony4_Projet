@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Defibrillator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,9 +20,9 @@ class DefibrillatorRepository extends ServiceEntityRepository
         parent::__construct($registry, Defibrillator::class);
     }
 
-    // /**
-    //  * @return Defibrillator[] Returns an array of Defibrillator objects
-    //  */
+    /**
+     * @return Defibrillator[] Returns an array of Defibrillator objects
+     */
     public function findVisible($minlongitude, $maxlongitude, $minlatitude, $maxlatitude)
     {
         return $this->createQueryBuilder('d')
@@ -36,6 +37,15 @@ class DefibrillatorRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findAllWithUtilizationCount() {
+        return $this->createQueryBuilder('d')
+            ->select('d, count(u) AS utilization_count')
+            ->leftJoin('d.utilizations', 'u', Join::WITH, 'd = u.defibrillator')
+            ->groupBy('d.id')
+            ->getQuery()
+            ->getResult();
     }
 
     /*

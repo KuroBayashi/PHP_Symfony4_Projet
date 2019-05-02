@@ -15,25 +15,31 @@ class Utilization
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("info")
+     *
+     * @Groups({"u_info"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="utilizations")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Groups({"u_info_expended"})
      */
     private $user;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups("info")
+     *
+     * @Groups({"u_info"})
      */
     private $doneAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Defibrillator", inversedBy="utilizations")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Groups({"u_info_expended"})
      */
     private $defibrillator;
 

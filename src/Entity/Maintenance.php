@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,17 +16,23 @@ class Maintenance
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *
+     * @Groups({"m_info"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Defibrillator", inversedBy="maintenances")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Groups({"m_info_expended"})
      */
     private $defibrillator;
 
     /**
      * @ORM\Column(type="datetime")
+     *
+     * @Groups({"m_info"})
      *
      * @Assert\NotBlank()
      * @Assert\DateTime()
@@ -35,6 +42,8 @@ class Maintenance
     /**
      * @ORM\Column(type="text", nullable=true)
      *
+     * @Groups({"m_info"})
+     *
      * @Assert\Type(type="string")
      */
     private $note;
@@ -42,6 +51,8 @@ class Maintenance
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="maintenances")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Groups({"m_info_expended"})
      */
     private $user;
 
