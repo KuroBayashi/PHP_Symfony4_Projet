@@ -44,6 +44,8 @@ class DefibrillatorRepository extends ServiceEntityRepository
             ->select('d, count(u) AS utilization_count')
             ->leftJoin('d.utilizations', 'u', Join::WITH, 'd = u.defibrillator')
             ->groupBy('d.id')
+            ->orderBy('utilization_count','DESC')
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
     }
