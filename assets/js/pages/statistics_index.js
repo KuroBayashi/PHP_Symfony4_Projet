@@ -4,21 +4,15 @@ require('../../scss/pages/statistics_index.scss');
 const $ = require('jquery');
 
 
-
-	var datar = [];
-	function getUtilNb(){
-	
-		$.getJSON("/api/defibrillator/utilizations", function(vals)
-		{
-		    //console.log(vals);
-            $.each(vals,function(index,value){
-                datar.push({ defib_id: value[0].id , frequency_util: parseInt(value.utilization_count), available: value[0].available});
-            });
-		});
-		console.log(datar);
-		populate(data_old);
-
-    }
+    let formatedData = [];
+    $.getJSON("/api/defibrillator/utilizations", (data) => {
+        $.each(data, function(index, value) {
+            formatedData.push({ defib_id: value[0].id , frequency_util: parseInt(value.utilization_count), available: value[0].available});
+        });
+    }).then(() => {
+        console.log(formatedData);
+        populate(formatedData);
+    });
 
 
 var margin = {top: 40, right: 20, bottom: 30, left: 40},
@@ -57,6 +51,7 @@ var svg = d3.select("body").append("svg")
 
 svg.call(tip);
 
+/*
 var data_old = [
     {defib_id: 35, frequency_util: 13, available: true},
     {defib_id: 47, frequency_util: 11, available: true},
@@ -79,8 +74,8 @@ var data_old = [
     {defib_id: 25, frequency_util: 6, available: true},
     {defib_id: 27, frequency_util: 6, available: true}
 ];
-
 console.log(data_old);
+*/
 function populate(data) {
 
     x.domain(data.map(function (d) {
@@ -141,8 +136,6 @@ function isDispo(d){
     }
 }
 
-
-getUtilNb();
 
 
 
