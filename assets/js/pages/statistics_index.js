@@ -11,7 +11,7 @@ const $ = require('jquery');
         });
     }).then(() => {
         console.log(formatedData);
-        populate(formatedData);
+        populate(data_old);
     });
 
 
@@ -40,7 +40,13 @@ var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) {
-        return "<strong>Utilisations :</strong> <span style='color:#ff0000'>" + d.frequency_util + "</span>";
+        if (d.available){
+            return "<strong>Utilisations :</strong> <span style='color:#00ff00'>" + d.frequency_util + "</span>";
+        }else{
+            return "<strong>Utilisations :</strong> <span style='color:#ff0000'>" + d.frequency_util + "</span>";
+        }
+
+
     })
 
 var svg = d3.select("body").append("svg")
@@ -51,7 +57,6 @@ var svg = d3.select("body").append("svg")
 
 svg.call(tip);
 
-/*
 var data_old = [
     {defib_id: 35, frequency_util: 13, available: true},
     {defib_id: 47, frequency_util: 11, available: true},
@@ -74,8 +79,7 @@ var data_old = [
     {defib_id: 25, frequency_util: 6, available: true},
     {defib_id: 27, frequency_util: 6, available: true}
 ];
-console.log(data_old);
-*/
+
 function populate(data) {
 
     x.domain(data.map(function (d) {
@@ -114,9 +118,6 @@ function populate(data) {
         .attr("height", function (d) {
             return height - y(d.frequency_util);
         })
-        .attr("disp",function(d){
-            return isDispo(d);
-        })
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide)
 
@@ -127,14 +128,6 @@ function type(d) {
     return d;
 }
 
-function isDispo(d){
-    if (d.available){
-        return "isDispo";
-    }
-    else{
-        return "isNotDispo";
-    }
-}
 
 
 

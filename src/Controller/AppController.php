@@ -12,7 +12,7 @@ class AppController extends AbstractController
      */
     public function index()
     {
-        return $this->render('app/index.html.twig', [
+        return $this->render('app/stats_nbUtil.html.twig', [
             'controller_name' => 'AppController',
         ]);
     }
@@ -41,7 +41,7 @@ class AppController extends AbstractController
     
             public function stats_index()
     {
-        return $this->render('statistics/index.html.twig', [
+        return $this->render('statistics/stats_nbUtil.html.twig', [
             'controller_name' => 'AppController',
         ]);
     }
