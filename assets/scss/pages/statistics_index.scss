@@ -30,6 +30,20 @@
   }
 }
 
+.bar--blue {
+  fill: #00d6ff;
+}
+
+.bar--yellow {
+  fill: #fff500;
+}
+
+.bar--bllue, .bar--yellow {
+  &:hover {
+    fill: #46ff38;
+  }
+}
+
 .x.axis path {
   display: none;
 }

@@ -89,4 +89,16 @@ class ApiDefibrillatorController extends AbstractController
             ['groups' => ['d_info']]
         ));
     }
+
+    /**
+     * @Route( "/api/defibrillator/maintenances", name="api_defibrillator_getallwithmaintenacecount", methods={"GET", "HEAD"})
+     */
+    public function getAllWithMaintenanceCount(SerializerInterface $serializer, DefibrillatorRepository $defibrillatorRepository) : Response
+    {
+        return JsonResponse::fromJsonString( $serializer->serialize(
+            $defibrillatorRepository->findAllWithMaintenanceCount(),
+            'json',
+            ['groups' => ['d_info']]
+        ));
+    }
 }
