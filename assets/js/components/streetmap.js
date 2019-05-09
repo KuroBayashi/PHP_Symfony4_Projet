@@ -273,6 +273,12 @@ class StreetMap {
         })
     }
 
+    goTo(lat, lng) {
+        this.map.setView(new L.LatLng(lat, lng), 18);
+        this.map.setZoom(17);
+    }
+
+
     /**
      * Utilities
      */

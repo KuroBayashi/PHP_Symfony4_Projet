@@ -23,7 +23,7 @@ class MaintenanceController extends AbstractController
      */
     public function index(MaintenanceRepository $maintenanceRepository): Response
     {
-        return $this->render('maintenance/stats_nbUtil.html.twig', [
+        return $this->render('maintenance/index.html.twig', [
             'maintenances' => $maintenanceRepository->findAll(),
         ]);
     }

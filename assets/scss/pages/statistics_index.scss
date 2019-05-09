@@ -1,13 +1,12 @@
+
+@import "../components/streetmap";
+
 .app-index__link {
   position: fixed;
   top: .5rem;
   right: .5rem;
 
   z-index: 1000;
-}
-
-body{
-  margin: 50px;
 }
 
 .axis path,
@@ -17,20 +16,18 @@ body{
   shape-rendering: crispEdges;
 }
 
-.bar {
-  fill: orange;
-}
-
-.isDispo {
+.bar--green {
   fill: #6cff69;
 }
 
-.isNotDispo {
+.bar--red {
   fill: #ff3647;
 }
 
-.bar:hover {
-  fill: #ffe101;
+.bar--green, .bar--red {
+  &:hover {
+    fill: #ffd635;
+  }
 }
 
 .x.axis path {

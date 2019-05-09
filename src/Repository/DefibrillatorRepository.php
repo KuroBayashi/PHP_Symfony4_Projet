@@ -50,6 +50,17 @@ class DefibrillatorRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllWithMaintenanceCount() {
+        return $this->createQueryBuilder('d')
+            ->select('d, count(m) AS maintenance_count')
+            ->leftJoin('d.maintenances', 'm', Join::WITH, 'd = m.defibrillator')
+            ->groupBy('d.id')
+            ->orderBy('maintenance_count','DESC')
+            ->setMaxResults(35)
+            ->getQuery()
+            ->getResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?Defibrillator
     {

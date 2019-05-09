@@ -19,30 +19,6 @@ class UtilizationRepository extends ServiceEntityRepository
         parent::__construct($registry, Utilization::class);
     }
 
-	public function findUtil()
-    {
-        return $this->createQueryBuilder('u')
-		    ->select('u.defibrillator_id, count(u.id) AS nb')
-            ->groupBy('u.defibrillator_id')
-            ->orderBy('u.nb', 'DESC')
-            ->setMaxResults(100)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    	public function UtilParDate()
-    {
-        return $this->createQueryBuilder('defib')
-		    //->select('u.defibrillator_id, count(u.id) AS nb')
-            ->groupBy('defib.')
-            ->orderBy('u.nb', 'DESC')
-            ->setMaxResults(100)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     // /**
     //  * @return Usage[] Returns an array of Usage objects
     //  */

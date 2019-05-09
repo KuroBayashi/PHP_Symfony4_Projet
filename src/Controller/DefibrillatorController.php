@@ -23,7 +23,7 @@ class DefibrillatorController extends AbstractController
      */
     public function index(DefibrillatorRepository $repository): Response
     {
-        return $this->render('defibrillator/stats_nbUtil.html.twig', [
+        return $this->render('defibrillator/index.html.twig', [
             'defibrillators' => $repository->findBy(['available' => true]),
         ]);
     }
