@@ -12,10 +12,9 @@
         </div>
         <ul class="nav navbar-nav nav-flex-icons ml-auto position-relative">
             <li class="nav-item">
-                <a href="{{ path('security_contact') }}" class="nav-link"><i class="fas fa-envelope"></i> <span class="clearfix d-none d-sm-inline-block">Contact</span></a>
+                <a href="{{ path('security_contact') }}" class="nav-link"><i class="fas fa-envelope"></i> <span class="clearfix d-none d-sm-inline-block">Contact us</span></a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link"><i class="far fa-comments"></i> <span class="clearfix d-none d-sm-inline-block">Support</span></a>
             </li>
             <li class="nav-item px-2 bg-default">
                 {% if app.user %}
@@ -27,7 +26,6 @@
                         <div class="card-body p-2">
                             <ul class="list-unstyled fa-ul">
                                 <li><span class="fa-li text-dark"><i class="fas fa-user"></i></span><a href="{{ path('user_profile') }}" class="text-primary">Profile</a></li>
-                                <li><span class="fa-li text-dark"><i class="fas fa-envelope"></i></span><a href="#" class="text-primary">Messages</a></li>
                             </ul>
                             <div class="dropdown-divider"></div>
                             <!-- Button -->

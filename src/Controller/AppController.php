@@ -41,8 +41,13 @@ class AppController extends AbstractController
     
             public function stats_index()
     {
-        return $this->render('statistics/stats_nbUtil.html.twig', [
+        return $this->render('statistics/index.html.twig', [
             'controller_name' => 'AppController',
         ]);
     }
+
+ 
+	      	
 }
+
+
