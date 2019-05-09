@@ -45,7 +45,16 @@ class AppController extends AbstractController
             'controller_name' => 'AppController',
         ]);
     }
-
+	/**
+     * @Route("/stats_maintenance", name="stats_maintenance")
+     */
+    
+            public function stats_maintenance()
+    {
+        return $this->render('statistics/stats_maintenances.html.twig', [
+            'controller_name' => 'AppController',
+        ]);
+    }
  
 	      	
 }
