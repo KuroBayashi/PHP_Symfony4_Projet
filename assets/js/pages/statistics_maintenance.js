@@ -49,7 +49,7 @@ var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) {
-        if (d.defibrillator.reported){
+        if (!d.defibrillator.reported){
             return "<strong>" + d.frequency_maintenance + "</strong> <span style='color:#00d6ff'>" + 'OK' + "</span>";
         }else{
             return "<strong>" + d.frequency_maintenance + "</strong> <span style='color:#fff500'>" + 'Signalé' + "</span>";
@@ -88,12 +88,12 @@ function populate(data) {
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("Utilisations");
+        .text("Maintenances");
 
     svg.selectAll(".bar")
         .data(data)
         .enter().append("rect")
-        .attr("class", (d) => {return d.defibrillator.reported ? "bar--blue" : "bar--yellow";})
+        .attr("class", (d) => {return !d.defibrillator.reported ? "bar--blue" : "bar--yellow";})
 .attr("x", function (d) {
         return x(d.defibrillator.id);
     })

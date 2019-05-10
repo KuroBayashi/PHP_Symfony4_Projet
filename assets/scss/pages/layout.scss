@@ -5,3 +5,21 @@
 @import "../components/mdb.min.css";
 @import "../components/mdb.fix";
 @import "../components/user";
+
+.logo-wrapper a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.o-svg-logo {
+  &__heart {
+    fill: #b52226;
+  }
+  &__flash {
+    fill: #ffd635;
+  }
+  &__plus {
+    fill: #ffd635;
+  }
+}
