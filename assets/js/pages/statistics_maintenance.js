@@ -50,9 +50,9 @@ var tip = d3.tip()
     .offset([-10, 0])
     .html(function(d) {
         if (d.defibrillator.reported){
-            return "<strong>Maintenances :</strong> <span style='color:#00d6ff'>" + d.frequency_maintenance + "</span>";
+            return "<strong>" + d.frequency_maintenance + "</strong> <span style='color:#00d6ff'>" + 'OK' + "</span>";
         }else{
-            return "<strong>Maintenances :</strong> <span style='color:#fff500'>" + d.frequency_maintenance + "</span>";
+            return "<strong>" + d.frequency_maintenance + "</strong> <span style='color:#fff500'>" + 'Signalé' + "</span>";
         }
 
 

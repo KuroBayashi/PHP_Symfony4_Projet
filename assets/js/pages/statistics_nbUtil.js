@@ -48,9 +48,9 @@ var tip = d3.tip()
     .offset([-10, 0])
     .html(function(d) {
         if (d.defibrillator.available){
-            return "<strong>Utilisations :</strong> <span style='color:#00ff00'>" + d.frequency_util + "</span>";
+            return "<strong>" + d.frequency_util + "</strong> <span style='color:#6cff69'>" + 'Disponible' + "</span>";
         }else{
-            return "<strong>Utilisations :</strong> <span style='color:#ff0000'>" + d.frequency_util + "</span>";
+            return "<strong>" + d.frequency_util + "</strong> <span style='color:#ff3647'>" + 'Indisponible' + "</span>";
         }
 
 
